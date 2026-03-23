@@ -1,0 +1,30 @@
+{
+  "name": "playwright-cucumber-js-pom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automation framework using Playwright + Cucumber (JavaScript) with POM for saucedemo login and cart flows",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "node -e \"process.exit(0)\"",
+    "test:chromium": "cross-env BROWSER=chromium cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/chromium/cucumber-report.json --parallel 2",
+    "test:firefox": "cross-env BROWSER=firefox cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/firefox/cucumber-report.json --parallel 2",
+    "test:webkit": "cross-env BROWSER=webkit cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/webkit/cucumber-report.json --parallel 2",
+    "test:chromium:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=chromium cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/chromium/cucumber-report.json --parallel 1",
+    "test:firefox:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=firefox cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/firefox/cucumber-report.json --parallel 1",
+    "test:webkit:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=webkit cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/webkit/cucumber-report.json --parallel 1",
+    "test:all": "concurrently --continue-on-error -n chromium,firefox,webkit -c green,yellow,blue \"npm run test:chromium\" \"npm run test:firefox\" \"npm run test:webkit\"",
+    "test:all:headed": "concurrently -n chromium,firefox,webkit -c green,yellow,blue \"npm run test:chromium:headed\" \"npm run test:firefox:headed\" \"npm run test:webkit:headed\"",
+    "report": "node scripts/generate-report.js",
+    "clean": "mkdir -p reports/json/chromium reports/json/firefox reports/json/webkit reports/html reports/screenshots/chromium reports/screenshots/firefox reports/screenshots/webkit reports/logs reports/archive",
+    "test": "npm run clean && (npm run test:all || true); npm run report"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.0.0",
+    "playwright": "^1.44.0",
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "multiple-cucumber-html-reporter": "^3.7.0"
+  }
+}
