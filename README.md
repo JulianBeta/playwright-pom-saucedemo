@@ -18,10 +18,10 @@ npm install
 - src/steps/ - Step definitions
 - src/support/ - Cucumber hooks and world
 - data/credentials.json - Login users and passwords
-- reports/ - JSON, screenshots, and generated HTML report
+- reports/ - JSON, screenshots, and generated HTML report (created by `npm test`, not committed)
 
 ## Credentials
-Stored in [credentials.json](//FPTLA-QATest/data/credentials.json). Valid demo users include: standard_user, locked_out_user, problem_user, performance_glitch_user, error_user, visual_user. All use password `secret_sauce`.
+Stored in [credentials.json](data/credentials.json). Valid demo users include: standard_user, locked_out_user, problem_user, performance_glitch_user, error_user, visual_user. All use password `secret_sauce`.
 
 ## Run Tests
 - All browsers in parallel and generate HTML report:
@@ -51,14 +51,14 @@ npm run test:webkit
 
 ## Reports
 - Per-browser HTML reports:
-  - Chromium: [reports/html/chromium/index.html](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/html/chromium/index.html)
-  - Firefox: [reports/html/firefox/index.html](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/html/firefox/index.html)
-  - WebKit: [reports/html/webkit/index.html](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/html/webkit/index.html)
-- Index page linking to all: [reports/html/index.html](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/html/index.html)
-- Screenshots on failure: [reports/screenshots](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/screenshots)
+  - Chromium: [reports/html/chromium/index.html](reports/html/chromium/index.html)
+  - Firefox: [reports/html/firefox/index.html](reports/html/firefox/index.html)
+  - WebKit: [reports/html/webkit/index.html](reports/html/webkit/index.html)
+- Index page linking to all: [reports/html/index.html](reports/html/index.html)
+- Screenshots on failure: [reports/screenshots](reports/screenshots)
 
 ## Debug Logging
-A simple logger writes console output and a JSON log file under [reports/logs](file:///Users/julianbetancourt/Documents/FPTLA-QATest/reports/logs). Hooks log browser lifecycle and failures.
+A simple logger writes console output and a JSON log file under [reports/logs](reports/logs). Hooks log browser lifecycle and failures.
 
 ## Error Handling
 - Hooks wrap setup/teardown in try/catch and rethrow to fail scenarios.
