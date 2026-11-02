@@ -51,14 +51,14 @@ npm run test:webkit
 
 ## Reports
 - Per-browser HTML reports:
-  - Chromium: [reports/html/chromium/index.html](reports/html/chromium/index.html)
-  - Firefox: [reports/html/firefox/index.html](reports/html/firefox/index.html)
-  - WebKit: [reports/html/webkit/index.html](reports/html/webkit/index.html)
-- Index page linking to all: [reports/html/index.html](reports/html/index.html)
-- Screenshots on failure: [reports/screenshots](reports/screenshots)
+  - Chromium: `reports/html/chromium/index.html`
+  - Firefox: `reports/html/firefox/index.html`
+  - WebKit: `reports/html/webkit/index.html`
+- Index page linking to all: `reports/html/index.html`
+- Screenshots on failure: `reports/screenshots`
 
 ## Debug Logging
-A simple logger writes console output and a JSON log file under [reports/logs](reports/logs). Hooks log browser lifecycle and failures.
+A simple logger writes console output and a JSON log file under `reports/logs`. Hooks log browser lifecycle and failures.
 
 ## Error Handling
 - Hooks wrap setup/teardown in try/catch and rethrow to fail scenarios.
