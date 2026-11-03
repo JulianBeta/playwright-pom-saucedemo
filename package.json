@@ -1,30 +1,51 @@
 {
-  "name": "playwright-cucumber-js-pom",
-  "version": "1.0.0",
+  "name": "playwright-pom-saucedemo",
+  "version": "2.0.0",
   "private": true,
-  "description": "Automation framework using Playwright + Cucumber (JavaScript) with POM for saucedemo login and cart flows",
-  "main": "index.js",
+  "description": "Playwright + TypeScript BDD test framework using the Page Object Model, against saucedemo.com",
   "scripts": {
-    "preinstall": "node -e \"process.exit(0)\"",
-    "test:chromium": "cross-env BROWSER=chromium cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/chromium/cucumber-report.json --parallel 2",
-    "test:firefox": "cross-env BROWSER=firefox cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/firefox/cucumber-report.json --parallel 2",
-    "test:webkit": "cross-env BROWSER=webkit cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/webkit/cucumber-report.json --parallel 2",
-    "test:chromium:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=chromium cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/chromium/cucumber-report.json --parallel 1",
-    "test:firefox:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=firefox cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/firefox/cucumber-report.json --parallel 1",
-    "test:webkit:headed": "cross-env HEADED=true SLOWMO=200 BROWSER=webkit cucumber-js --require src/support/world.js --require src/support/hooks.js --require src/steps/**/*.js --format json:reports/json/webkit/cucumber-report.json --parallel 1",
-    "test:all": "concurrently --continue-on-error -n chromium,firefox,webkit -c green,yellow,blue \"npm run test:chromium\" \"npm run test:firefox\" \"npm run test:webkit\"",
-    "test:all:headed": "concurrently -n chromium,firefox,webkit -c green,yellow,blue \"npm run test:chromium:headed\" \"npm run test:firefox:headed\" \"npm run test:webkit:headed\"",
-    "report": "node scripts/generate-report.js",
-    "clean": "mkdir -p reports/json/chromium reports/json/firefox reports/json/webkit reports/html reports/screenshots/chromium reports/screenshots/firefox reports/screenshots/webkit reports/logs reports/archive",
-    "test": "npm run clean && (npm run test:all || true); npm run report"
-  },
-  "dependencies": {
-    "@cucumber/cucumber": "^10.0.0",
-    "playwright": "^1.44.0",
-    "cross-env": "^7.0.3"
+    "bddgen": "bddgen",
+    "test": "bddgen && playwright test",
+    "test:smoke": "bddgen && playwright test --grep @smoke",
+    "test:regression": "bddgen && playwright test --grep-invert @known-bug",
+    "test:known-bugs": "bddgen && playwright test --grep @known-bug",
+    "test:visual": "bddgen && playwright test --project=chromium --grep @visual",
+    "test:visual:update": "bddgen && playwright test --project=chromium --grep @visual --grep-invert @known-bug --update-snapshots",
+    "test:a11y": "bddgen && playwright test --grep @a11y",
+    "test:headed": "bddgen && playwright test --project=chromium --headed",
+    "test:ui": "bddgen && playwright test --ui",
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "bddgen && tsc --noEmit",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "multiple-cucumber-html-reporter": "^3.7.0"
+    "@axe-core/playwright": "^4.14.0",
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.12.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "playwright-bdd": "^9.2.1",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,feature}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
