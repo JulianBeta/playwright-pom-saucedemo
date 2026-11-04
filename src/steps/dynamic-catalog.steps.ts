@@ -88,8 +88,17 @@ Given('the browser clock is under test control', async ({ page }) => {
 
 When('time is paused', async ({ page }) => {
   // From here on, timers only fire when a step advances time explicitly.
-  const now = await page.evaluate(() => Date.now());
-  await page.clock.pauseAt(now + 10);
+  // pauseAt needs a moment in the future, but the fake clock keeps running while this step
+  // talks to the browser; on a slow runner the target can slip into the past, so retry.
+  for (let attempt = 1; ; attempt++) {
+    const now = await page.evaluate(() => Date.now());
+    try {
+      await page.clock.pauseAt(now + 250 * attempt);
+      return;
+    } catch (error) {
+      if (attempt >= 5 || !String(error).includes('fast-forward to the past')) throw error;
+    }
+  }
 });
 
 When('I select the slider dot for {string}', async ({ sliderPage }, name: string) => {
@@ -104,7 +113,9 @@ When('I hover over the slider', async ({ sliderPage }) => {
   await sliderPage.slide.hover();
 });
 
+// Arrange the starting slide explicitly instead of relying on where auto-play happened to be.
 Given('the slider shows {string}', async ({ sliderPage }, name: string) => {
+  await sliderPage.dotFor(name).click();
   await expect(sliderPage.slideName).toHaveText(name);
 });
 
